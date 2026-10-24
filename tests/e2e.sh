@@ -47,7 +47,11 @@ echo "public code" >main.go
 git add -A
 git commit -qm "initial, in clear"
 
-"$CC" scan-history >/dev/null 2>&1 && fail "scan-history missed plaintext history"
+"$CC" scan-history >"$WORK/scan.out" 2>&1 && fail "scan-history missed plaintext history"
+for p in CLAUDE.md .claude/skills/deploy/SKILL.md .claude/agents/reviewer.md .claude/rules/style.md; do
+	grep -q " $p\$" "$WORK/scan.out" || fail "scan-history did not list $p"
+done
+grep -qE ' (main\.go|\.claude/settings\.json)$' "$WORK/scan.out" && fail "scan-history listed an unprotected file"
 ok "scan-history reports the configuration committed in clear"
 
 "$CC" init >/dev/null 2>&1 || fail "init"

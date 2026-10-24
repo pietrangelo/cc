@@ -150,7 +150,7 @@ must_encrypt() {
 			.claude/*) printf '%s\0' "$path" ;;
 			CLAUDE.md) ;;
 			*/CLAUDE.md | CLAUDE.local.md | */CLAUDE.local.md) printf '%s\0' "$path" ;;
-			*) [ "$val" = sec ] && printf '%s\0' "$path" ;;
+			*) if [ "$val" = sec ]; then printf '%s\0' "$path"; fi ;;
 			esac
 		done
 	return 0
@@ -458,11 +458,14 @@ name: Encrypted Claude configuration
 
 on: [push, pull_request]
 
+permissions:
+  contents: read
+
 jobs:
   check:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
       - name: Check that the Claude configuration is encrypted
         run: .claude/cc/cc check
 EOF
