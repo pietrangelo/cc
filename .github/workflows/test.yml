@@ -6,9 +6,8 @@ jobs:
   e2e:
     runs-on: ubuntu-latest
     env:
-      # sec v2 is not released yet: build it from the branch of
-      # pietrangelo/sec#1, then switch to the v2.0.0 tag once it exists.
-      SEC_REF: harden-v2-format
+      # The sec release that `cc init` pins by default.
+      SEC_REF: v2.0.0
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-go@v5
