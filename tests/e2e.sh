@@ -15,6 +15,8 @@ export SEC_BIN
 WORK=$(mktemp -d)
 if [ -n "${KEEP:-}" ]; then echo "work dir: $WORK"; else trap 'rm -rf "$WORK"' EXIT; fi
 export HOME=$WORK/home CC_KEY_DIR=$WORK/home/keys
+# A key from the calling environment would hide the "no key" case.
+unset SEC_TOOL_KEY
 mkdir -p "$HOME"
 git config --global user.email test@example.com
 git config --global user.name test
